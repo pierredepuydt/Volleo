@@ -1,4 +1,8 @@
 import { notFound, redirect } from 'next/navigation';
+
+// Force dynamic rendering to avoid static path generation for dynamic route
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { createClient } from '@/lib/supabase/server';
 import { Navigation } from '@/components/navigation';
 import { TournamentDetail } from './tournament-detail';

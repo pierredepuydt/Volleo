@@ -39,8 +39,8 @@ export function RegistrationForm({
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Build schema based on registration mode
-  let registrationSchema = baseRegistrationSchema;
+  // Build schema based on registration mode (use loose typing to accommodate refine/extend variants)
+  let registrationSchema: any = baseRegistrationSchema;
 
   if (tournament.registration_mode === 'team') {
     registrationSchema = baseRegistrationSchema.extend({
@@ -82,7 +82,7 @@ export function RegistrationForm({
     setValue,
     formState: { errors },
   } = useForm<RegistrationFormData>({
-    resolver: zodResolver(registrationSchema),
+    resolver: zodResolver(registrationSchema as any),
     defaultValues: {
       firstName: userProfile?.first_name || '',
       lastName: userProfile?.last_name || '',
@@ -138,15 +138,15 @@ export function RegistrationForm({
         <div className="space-y-2">
           <Label htmlFor="firstName">Prénom *</Label>
           <Input id="firstName" {...register('firstName')} disabled={isLoading} />
-          {errors.firstName && (
-            <p className="text-sm text-destructive">{errors.firstName.message}</p>
+          {errors.firstName?.message && (
+            <p className="text-sm text-destructive">{String(errors.firstName.message)}</p>
           )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="lastName">Nom *</Label>
           <Input id="lastName" {...register('lastName')} disabled={isLoading} />
-          {errors.lastName && (
-            <p className="text-sm text-destructive">{errors.lastName.message}</p>
+          {errors.lastName?.message && (
+            <p className="text-sm text-destructive">{String(errors.lastName.message)}</p>
           )}
         </div>
       </div>
@@ -154,16 +154,16 @@ export function RegistrationForm({
       <div className="space-y-2">
         <Label htmlFor="email">Email *</Label>
         <Input id="email" type="email" {...register('email')} disabled={isLoading} />
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
+        {errors.email?.message && (
+          <p className="text-sm text-destructive">{String(errors.email.message)}</p>
         )}
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="phone">Téléphone *</Label>
         <Input id="phone" type="tel" {...register('phone')} disabled={isLoading} />
-        {errors.phone && (
-          <p className="text-sm text-destructive">{errors.phone.message}</p>
+        {errors.phone?.message && (
+          <p className="text-sm text-destructive">{String(errors.phone.message)}</p>
         )}
       </div>
 
@@ -185,8 +185,8 @@ export function RegistrationForm({
               ))}
             </SelectContent>
           </Select>
-          {errors.gender && (
-            <p className="text-sm text-destructive">{errors.gender.message}</p>
+          {errors.gender?.message && (
+            <p className="text-sm text-destructive">{String(errors.gender.message)}</p>
           )}
         </div>
 
@@ -207,8 +207,8 @@ export function RegistrationForm({
               ))}
             </SelectContent>
           </Select>
-          {errors.level && (
-            <p className="text-sm text-destructive">{errors.level.message}</p>
+          {errors.level?.message && (
+            <p className="text-sm text-destructive">{String(errors.level.message)}</p>
           )}
         </div>
       </div>
