@@ -43,6 +43,12 @@ export function TournamentDetail({
     !userRegistration &&
     tournament.status === 'published' &&
     new Date(tournament.registration_deadline) > new Date();
+  
+  // Show login/signup prompt for non-logged users when registration is open
+  const shouldShowAuthPrompt =
+    !user &&
+    tournament.status === 'published' &&
+    new Date(tournament.registration_deadline) > new Date();
 
   const handleShare = async () => {
     const url = tournament.is_public
@@ -152,6 +158,32 @@ export function TournamentDetail({
                 </p>
               </CardContent>
             </Card>
+
+            {/* Auth prompt for non-logged users */}
+            {shouldShowAuthPrompt && (
+              <Card className="border-primary bg-primary/5">
+                <CardHeader>
+                  <CardTitle>Rejoignez-nous pour participer !</CardTitle>
+                  <CardDescription>
+                    Connectez-vous ou créez un compte pour vous inscrire à ce tournoi
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Link href="/auth/connexion" className="flex-1">
+                      <Button variant="default" className="w-full">
+                        Se connecter
+                      </Button>
+                    </Link>
+                    <Link href="/auth/inscription" className="flex-1">
+                      <Button variant="outline" className="w-full">
+                        Créer un compte
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Registration */}
             {canRegister && (
