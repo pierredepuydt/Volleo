@@ -401,10 +401,7 @@ export function EditTournamentForm({ tournament }: EditTournamentFormProps) {
 
       {/* Bouton de suppression */}
       <Card className="border-destructive">
-        <CardHeader>
-          <CardTitle className="text-destructive">Zone dangereuse</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-semibold">Supprimer ce tournoi</p>
