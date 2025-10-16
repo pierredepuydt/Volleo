@@ -11,9 +11,10 @@ export type TournamentCategory = 'mixed' | 'men' | 'women';
 export type TournamentLevel = 'beginner' | 'intermediate' | 'advanced';
 export type RegistrationMode = 'team' | 'solo' | 'solo_positional' | 'team_or_solo';
 export type TournamentStatus = 'draft' | 'published' | 'ongoing' | 'completed' | 'cancelled';
-export type RegistrationStatus = 'pending' | 'approved' | 'rejected' | 'waitlisted';
+export type RegistrationStatus = 'pending' | 'approved' | 'rejected' | 'waitlisted' | 'accepted_unpaid' | 'accepted_paid' | 'expired_unpaid' | 'payment_failed';
 export type Gender = 'male' | 'female' | 'other';
 export type PositionType = 'setter' | 'middle' | 'outside' | 'opposite' | 'libero';
+export type PaymentStatus = 'pending' | 'completed' | 'failed' | 'expired';
 
 export interface Database {
   public: {
@@ -67,6 +68,7 @@ export interface Database {
           level: TournamentLevel;
           registration_mode: RegistrationMode;
           max_teams: number | null;
+          price: number | null;
           start_date: string;
           end_date: string;
           registration_deadline: string;
@@ -90,6 +92,7 @@ export interface Database {
           level: TournamentLevel;
           registration_mode: RegistrationMode;
           max_teams?: number | null;
+          price?: number | null;
           start_date: string;
           end_date: string;
           registration_deadline: string;
@@ -113,6 +116,7 @@ export interface Database {
           level?: TournamentLevel;
           registration_mode?: RegistrationMode;
           max_teams?: number | null;
+          price?: number | null;
           start_date?: string;
           end_date?: string;
           registration_deadline?: string;
@@ -143,6 +147,12 @@ export interface Database {
           team_name: string | null;
           teammate_first_name: string | null;
           teammate_last_name: string | null;
+          stripe_session_id: string | null;
+          stripe_payment_intent_id: string | null;
+          payment_status: PaymentStatus | null;
+          accepted_at: string | null;
+          payment_deadline: string | null;
+          paid_at: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -161,6 +171,12 @@ export interface Database {
           team_name?: string | null;
           teammate_first_name?: string | null;
           teammate_last_name?: string | null;
+          stripe_session_id?: string | null;
+          stripe_payment_intent_id?: string | null;
+          payment_status?: PaymentStatus | null;
+          accepted_at?: string | null;
+          payment_deadline?: string | null;
+          paid_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -179,6 +195,12 @@ export interface Database {
           team_name?: string | null;
           teammate_first_name?: string | null;
           teammate_last_name?: string | null;
+          stripe_session_id?: string | null;
+          stripe_payment_intent_id?: string | null;
+          payment_status?: PaymentStatus | null;
+          accepted_at?: string | null;
+          payment_deadline?: string | null;
+          paid_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
