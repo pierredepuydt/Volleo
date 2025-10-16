@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/components/ui/use-toast';
 import { createClient } from '@/lib/supabase/client';
+import { Trash2, AlertTriangle } from 'lucide-react';
 import {
   TOURNAMENT_CATEGORIES,
   TOURNAMENT_LEVELS,
@@ -47,6 +48,8 @@ export function EditTournamentForm({ tournament }: EditTournamentFormProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const {
     register,
@@ -118,6 +121,38 @@ export function EditTournamentForm({ tournament }: EditTournamentFormProps) {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+
+    try {
+      const response = await fetch(`/api/tournaments/${tournament.id}/delete`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de la suppression');
+      }
+
+      toast({
+        title: 'Tournoi supprimé',
+        description: 'Le tournoi a été supprimé avec succès.',
+      });
+
+      router.push('/mes-tournois');
+      router.refresh();
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Erreur',
+        description: error.message || 'Une erreur est survenue lors de la suppression',
+      });
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
     }
   };
 
@@ -363,6 +398,74 @@ export function EditTournamentForm({ tournament }: EditTournamentFormProps) {
           {isLoading ? 'Enregistrement...' : 'Enregistrer les modifications'}
         </Button>
       </div>
+
+      {/* Bouton de suppression */}
+      <Card className="border-destructive">
+        <CardHeader>
+          <CardTitle className="text-destructive">Zone dangereuse</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-semibold">Supprimer ce tournoi</p>
+              <p className="text-sm text-muted-foreground">
+                Cette action est irréversible. Toutes les inscriptions seront également supprimées.
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={() => setShowDeleteConfirm(true)}
+              disabled={isLoading || isDeleting}
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Supprimer
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Modal de confirmation */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-md">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-6 w-6 text-destructive" />
+                <CardTitle>Confirmer la suppression</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Êtes-vous sûr de vouloir supprimer le tournoi <strong>&quot;{tournament.title}&quot;</strong> ?
+              </p>
+              <p className="text-sm text-destructive font-semibold">
+                Cette action est irréversible et supprimera également toutes les inscriptions associées.
+              </p>
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={isDeleting}
+                  className="flex-1"
+                >
+                  Annuler
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="flex-1"
+                >
+                  {isDeleting ? 'Suppression...' : 'Supprimer définitivement'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </form>
   );
 }
