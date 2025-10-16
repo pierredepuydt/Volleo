@@ -21,6 +21,8 @@ import {
   TOURNAMENT_LEVELS,
   REGISTRATION_MODES,
 } from '@/lib/constants';
+import { TournamentImageSelector } from '@/components/tournament-image-selector';
+import { getDefaultImageByVariant } from '@/lib/tournament-images';
 
 const tournamentSchema = z.object({
   title: z.string().min(3, 'Le titre doit contenir au moins 3 caractères'),
@@ -30,6 +32,7 @@ const tournamentSchema = z.object({
   level: z.enum(['beginner', 'intermediate', 'advanced']),
   registrationMode: z.enum(['team', 'solo', 'solo_positional', 'team_or_solo']),
   maxTeams: z.string().optional(),
+  imageUrl: z.string().optional(),
   startDate: z.string().min(1, 'La date de début est requise'),
   endDate: z.string().min(1, 'La date de fin est requise'),
   registrationDeadline: z.string().min(1, 'La date limite d\'inscription est requise'),
@@ -75,11 +78,13 @@ export function CreateTournamentForm({ userId }: CreateTournamentFormProps) {
       country: 'France',
       isPublic: true,
       status: 'draft',
+      imageUrl: getDefaultImageByVariant('indoor_6x6'),
     },
   });
 
   const selectedVariant = watch('variant');
   const isPublic = watch('isPublic');
+  const imageUrl = watch('imageUrl');
 
   const onSubmit = async (data: TournamentFormData) => {
     setIsLoading(true);
@@ -102,6 +107,7 @@ export function CreateTournamentForm({ userId }: CreateTournamentFormProps) {
           level: data.level,
           registration_mode: data.registrationMode,
           max_teams: data.maxTeams ? parseInt(data.maxTeams) : null,
+          image_url: data.imageUrl || getDefaultImageByVariant(data.variant),
           start_date: data.startDate,
           end_date: data.endDate,
           registration_deadline: data.registrationDeadline,
@@ -176,11 +182,16 @@ export function CreateTournamentForm({ userId }: CreateTournamentFormProps) {
               <Label>Variant *</Label>
               <Select
                 onValueChange={(value) => {
-                  setValue('variant', value as 'indoor_6x6' | 'beach_2x2');
-                  setVariant(value as 'indoor_6x6' | 'beach_2x2');
+                  const variantValue = value as 'indoor_6x6' | 'beach_2x2';
+                  setValue('variant', variantValue);
+                  setVariant(variantValue);
                   // Reset registration mode when changing variant
                   if (value === 'beach_2x2') {
                     setValue('registrationMode', 'team');
+                  }
+                  // Update default image based on variant
+                  if (!imageUrl || imageUrl === getDefaultImageByVariant(selectedVariant)) {
+                    setValue('imageUrl', getDefaultImageByVariant(variantValue));
                   }
                 }}
                 defaultValue="indoor_6x6"
@@ -239,6 +250,19 @@ export function CreateTournamentForm({ userId }: CreateTournamentFormProps) {
               </Select>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Image du tournoi</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <TournamentImageSelector
+            value={imageUrl}
+            onChange={(url) => setValue('imageUrl', url)}
+            variant={selectedVariant}
+          />
         </CardContent>
       </Card>
 

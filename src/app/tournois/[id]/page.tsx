@@ -1,15 +1,38 @@
 import { notFound, redirect } from 'next/navigation';
+import { Metadata } from 'next';
 
 // Force dynamic rendering to avoid static path generation for dynamic route
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
 import { createClient } from '@/lib/supabase/server';
 import { Navigation } from '@/components/navigation';
-import { TournamentDetail } from './tournament-detail';
+import { Footer } from '@/components/footer';
+import { TournamentDetailPage } from '@/components/tournament/tournament-detail-page';
 
 interface TournamentPageProps {
   params: { id: string };
   searchParams: { token?: string };
+}
+
+export async function generateMetadata({ params }: TournamentPageProps): Promise<Metadata> {
+  const supabase = await createClient();
+  const { data: tournament } = await supabase
+    .from('tournaments')
+    .select('title, description')
+    .eq('id', params.id)
+    .single();
+
+  if (!tournament) {
+    return {
+      title: 'Tournoi non trouvé - Volleo',
+    };
+  }
+
+  return {
+    title: `${tournament.title} - Volleo`,
+    description: tournament.description || 'Découvrez ce tournoi de volleyball et inscrivez-vous !',
+  };
 }
 
 export default async function TournamentPage({
@@ -92,9 +115,9 @@ export default async function TournamentPage({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white flex flex-col">
       <Navigation user={user} userProfile={userProfile} />
-      <TournamentDetail
+      <TournamentDetailPage
         tournament={tournament}
         user={user}
         userRegistration={userRegistration}
@@ -102,6 +125,7 @@ export default async function TournamentPage({
         accessToken={searchParams.token}
         currentUserProfile={currentUserProfile}
       />
+      <Footer />
     </div>
   );
 }

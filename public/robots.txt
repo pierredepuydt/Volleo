@@ -1,0 +1,8 @@
+# robots.txt for Volleo
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /auth/signout
+
+Sitemap: https://volleo.fr/sitemap.xml
+
