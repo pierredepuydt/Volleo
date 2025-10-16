@@ -227,7 +227,7 @@ export function ImageCropModal({
             <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-blue-50 to-cyan-50">
               <div>
                 <h2 className="text-2xl font-bold text-slate-900">
-                  Recadrer l'image
+                  Recadrer l&apos;image
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">
                   Ajustez le cadrage pour obtenir le résultat parfait
@@ -300,13 +300,13 @@ export function ImageCropModal({
                     {imageError ? (
                       <div className="text-center space-y-3">
                         <X className="h-12 w-12 text-red-400 mx-auto" />
-                        <p className="text-slate-600">Erreur lors du chargement de l'image</p>
+                        <p className="text-slate-600">Erreur lors du chargement de l&apos;image</p>
                         <p className="text-sm text-slate-400">Veuillez réessayer</p>
                       </div>
                     ) : !imageLoaded ? (
                       <div className="text-center space-y-3">
                         <Loader2 className="h-12 w-12 text-blue-600 animate-spin mx-auto" />
-                        <p className="text-slate-600">Chargement de l'image...</p>
+                        <p className="text-slate-600">Chargement de l&apos;image...</p>
                       </div>
                     ) : null}
                     
@@ -350,7 +350,7 @@ export function ImageCropModal({
                             });
                           }}
                           onError={(e) => {
-                            console.error('❌ Erreur de chargement d\'image:', e);
+                            console.error('❌ Erreur de chargement d&apos;image:', e);
                             setImageError(true);
                             setImageLoaded(false);
                           }}
@@ -404,7 +404,7 @@ export function ImageCropModal({
 
                         {/* Contenu de la carte */}
                         <div className="p-4 space-y-3">
-                          <h3 className="text-xl font-bold text-slate-900">Tournoi d'Exemple</h3>
+                          <h3 className="text-xl font-bold text-slate-900">Tournoi d&apos;Exemple</h3>
                           
                           <div className="space-y-2">
                             <div className="flex items-center gap-2 text-slate-600">

@@ -109,7 +109,7 @@ export default async function HomePage() {
               <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
                 Découvre les prochains tournois et inscris-toi en quelques clics.
                 <br />
-                <span className="text-blue-600 font-medium">C'est gratuit et sans engagement !</span>
+                <span className="text-blue-600 font-medium">C&apos;est gratuit et sans engagement !</span>
               </p>
             </div>
             <Suspense fallback={<TournamentSkeletonGrid count={6} />}>

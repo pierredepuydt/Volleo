@@ -90,7 +90,7 @@ export function Footer() {
               <p className="flex items-center justify-center md:justify-start gap-1 flex-wrap">
                 © {new Date().getFullYear()} Volleo — Fait avec{' '}
                 <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />{' '}
-                par l'équipe Volleo
+                par l&apos;équipe Volleo
               </p>
               <p className="mt-1">
                 Propulsé par{' '}

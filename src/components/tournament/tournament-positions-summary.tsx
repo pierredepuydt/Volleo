@@ -129,7 +129,7 @@ export function TournamentPositionsSummary({
           <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
             <p className="text-sm text-blue-800 leading-relaxed">
               <span className="font-semibold">💡 Note :</span> Les postes sont attribués par
-              l'organisateur après validation de votre inscription. La sélection finale dépend de
+              l&apos;organisateur après validation de votre inscription. La sélection finale dépend de
               la disponibilité et des quotas définis.
             </p>
           </div>

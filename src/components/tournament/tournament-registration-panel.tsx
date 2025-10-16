@@ -202,7 +202,7 @@ export function TournamentRegistrationPanel({
       >
         <Alert className="border-slate-300 bg-slate-50">
           <Users className="h-5 w-5" />
-          <AlertTitle className="text-lg font-semibold mb-2">Vous êtes l'organisateur</AlertTitle>
+          <AlertTitle className="text-lg font-semibold mb-2">Vous êtes l&apos;organisateur</AlertTitle>
           <AlertDescription className="text-slate-600">
             Gérez les inscriptions depuis la section ci-dessous.
           </AlertDescription>
@@ -310,7 +310,7 @@ export function TournamentRegistrationPanel({
               <div className="mx-auto h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
                 <UserPlus className="h-8 w-8 text-blue-600" />
               </div>
-              <CardTitle className="text-2xl">S'inscrire au tournoi</CardTitle>
+              <CardTitle className="text-2xl">S&apos;inscrire au tournoi</CardTitle>
               <CardDescription className="text-base">
                 {tournament.registration_mode === 'solo_positional' && 'Inscription solo avec choix du poste'}
                 {tournament.registration_mode === 'team' && 'Inscription en équipe'}
@@ -324,7 +324,7 @@ export function TournamentRegistrationPanel({
                 className="w-full h-12 text-base font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-md"
               >
                 <UserPlus className="mr-2 h-5 w-5" />
-                Je m'inscris
+                Je m&apos;inscris
               </Button>
             </CardContent>
           </Card>
@@ -341,7 +341,7 @@ export function TournamentRegistrationPanel({
       >
         <Card className="shadow-lg">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 border-b">
-            <CardTitle className="text-xl">Formulaire d'inscription</CardTitle>
+            <CardTitle className="text-xl">Formulaire d&apos;inscription</CardTitle>
             <CardDescription>Complétez les informations ci-dessous</CardDescription>
           </CardHeader>
           <CardContent className="p-6">
@@ -491,7 +491,7 @@ export function TournamentRegistrationPanel({
                     </SelectContent>
                   </Select>
                   <p className="text-xs text-slate-500 mt-1">
-                    💡 La sélection finale sera effectuée par l'organisateur
+                    💡 La sélection finale sera effectuée par l&apos;organisateur
                   </p>
                   {errors.position && (
                     <p className="text-sm text-red-600">{(errors as any).position.message}</p>
@@ -504,7 +504,7 @@ export function TournamentRegistrationPanel({
                 <>
                   <div className="space-y-2">
                     <Label htmlFor="teamName" className="text-sm font-semibold">
-                      Nom d'équipe <span className="text-red-500">*</span>
+                      Nom d&apos;équipe <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="teamName"
@@ -581,7 +581,7 @@ export function TournamentRegistrationPanel({
                   ) : (
                     <>
                       <CheckCircle2 className="mr-2 h-4 w-4" />
-                      Confirmer l'inscription
+                      Confirmer l&apos;inscription
                     </>
                   )}
                 </Button>
@@ -604,7 +604,7 @@ export function TournamentRegistrationPanel({
         <AlertCircle className="h-5 w-5" />
         <AlertTitle className="text-lg font-semibold mb-2">Inscriptions fermées</AlertTitle>
         <AlertDescription className="text-slate-600">
-          La période d'inscription pour ce tournoi est terminée.
+          La période d&apos;inscription pour ce tournoi est terminée.
         </AlertDescription>
       </Alert>
     </motion.div>

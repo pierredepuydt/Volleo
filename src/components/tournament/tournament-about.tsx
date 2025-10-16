@@ -40,7 +40,7 @@ export function TournamentAbout({ description }: TournamentAboutProps) {
                 Aucune description pour le moment
               </p>
               <p className="text-slate-400 text-xs max-w-xs">
-                L'organisateur n'a pas encore ajouté de description pour ce tournoi.
+                L&apos;organisateur n&apos;a pas encore ajouté de description pour ce tournoi.
               </p>
             </div>
           )}
