@@ -41,10 +41,17 @@ export function RegistrationsList({ registrations, tournamentId, tournamentPrice
     const supabase = createClient();
 
     try {
+      // Debug: afficher les valeurs
+      console.log('🔍 Debug updateStatus:');
+      console.log('- tournamentPrice:', tournamentPrice);
+      console.log('- status:', status);
+      
       // Déterminer le statut final selon le prix du tournoi
       const finalStatus = status === 'approved' 
         ? (tournamentPrice && tournamentPrice > 0 ? 'accepted_unpaid' : 'approved')
         : 'rejected';
+
+      console.log('- finalStatus:', finalStatus);
 
       // Préparer les données de mise à jour
       const updateData: any = { status: finalStatus };
@@ -57,6 +64,10 @@ export function RegistrationsList({ registrations, tournamentId, tournamentPrice
         updateData.accepted_at = now.toISOString();
         updateData.payment_deadline = paymentDeadline.toISOString();
         updateData.payment_status = 'pending';
+        
+        console.log('- updateData avec paiement:', updateData);
+      } else {
+        console.log('- updateData sans paiement:', updateData);
       }
 
       const { error } = await supabase
