@@ -27,6 +27,7 @@ const tournamentSchema = z.object({
   category: z.enum(['mixed', 'men', 'women']),
   level: z.enum(['beginner', 'intermediate', 'advanced']),
   maxTeams: z.string().optional(),
+  price: z.string().optional(),
   startDate: z.string().min(1, 'La date de début est requise'),
   endDate: z.string().min(1, 'La date de fin est requise'),
   registrationDeadline: z.string().min(1, 'La date limite d\'inscription est requise'),
@@ -65,6 +66,7 @@ export function EditTournamentForm({ tournament }: EditTournamentFormProps) {
       category: tournament.category,
       level: tournament.level,
       maxTeams: tournament.max_teams?.toString() || '',
+      price: tournament.price?.toString() || '',
       startDate: tournament.start_date.slice(0, 16),
       endDate: tournament.end_date.slice(0, 16),
       registrationDeadline: tournament.registration_deadline.slice(0, 16),
@@ -92,6 +94,7 @@ export function EditTournamentForm({ tournament }: EditTournamentFormProps) {
           category: data.category,
           level: data.level,
           max_teams: data.maxTeams ? parseInt(data.maxTeams) : null,
+          price: data.price ? parseFloat(data.price) : null,
           start_date: data.startDate,
           end_date: data.endDate,
           registration_deadline: data.registrationDeadline,
@@ -256,6 +259,22 @@ export function EditTournamentForm({ tournament }: EditTournamentFormProps) {
               {...register('maxTeams')}
               disabled={isLoading}
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="price">Prix d&apos;inscription (€)</Label>
+            <Input
+              id="price"
+              type="number"
+              step="0.01"
+              min="0"
+              placeholder="0.00"
+              {...register('price')}
+              disabled={isLoading}
+            />
+            <p className="text-sm text-muted-foreground">
+              Laissez vide ou 0 pour un tournoi gratuit
+            </p>
           </div>
         </CardContent>
       </Card>

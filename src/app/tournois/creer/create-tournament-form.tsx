@@ -33,6 +33,7 @@ const tournamentSchema = z.object({
   registrationMode: z.enum(['team', 'solo', 'solo_positional', 'team_or_solo']),
   maxTeams: z.string().optional(),
   imageUrl: z.string().optional(),
+  price: z.string().optional(),
   startDate: z.string().min(1, 'La date de début est requise'),
   endDate: z.string().min(1, 'La date de fin est requise'),
   registrationDeadline: z.string().min(1, 'La date limite d\'inscription est requise'),
@@ -108,6 +109,7 @@ export function CreateTournamentForm({ userId }: CreateTournamentFormProps) {
           registration_mode: data.registrationMode,
           max_teams: data.maxTeams ? parseInt(data.maxTeams) : null,
           image_url: data.imageUrl || getDefaultImageByVariant(data.variant),
+          price: data.price ? parseFloat(data.price) : null,
           start_date: data.startDate,
           end_date: data.endDate,
           registration_deadline: data.registrationDeadline,
@@ -321,6 +323,29 @@ export function CreateTournamentForm({ userId }: CreateTournamentFormProps) {
             />
             <p className="text-sm text-muted-foreground">
               Laissez vide pour un nombre illimité
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Prix d&apos;inscription</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            <Label htmlFor="price">Prix par équipe/joueur (€)</Label>
+            <Input
+              id="price"
+              type="number"
+              step="0.01"
+              min="0"
+              placeholder="0.00"
+              {...register('price')}
+              disabled={isLoading}
+            />
+            <p className="text-sm text-muted-foreground">
+              Laissez vide ou 0 pour un tournoi gratuit
             </p>
           </div>
         </CardContent>
