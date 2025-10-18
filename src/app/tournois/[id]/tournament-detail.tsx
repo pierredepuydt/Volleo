@@ -16,6 +16,7 @@ import {
 import { RegistrationForm } from './registration-form';
 import { RegistrationsList } from './registrations-list';
 import { useToast } from '@/components/ui/use-toast';
+import { PaymentBanner } from '@/components/payment-banner';
 
 interface TournamentDetailProps {
   tournament: any;
@@ -228,6 +229,12 @@ export function TournamentDetail({
                         className={`px-2 py-1 rounded text-sm ${
                           userRegistration.status === 'approved'
                             ? 'bg-green-100 text-green-800'
+                            : userRegistration.status === 'accepted_paid'
+                            ? 'bg-green-100 text-green-800'
+                            : userRegistration.status === 'accepted_unpaid'
+                            ? 'bg-orange-100 text-orange-800'
+                            : userRegistration.status === 'expired_unpaid'
+                            ? 'bg-red-100 text-red-800'
                             : userRegistration.status === 'rejected'
                             ? 'bg-red-100 text-red-800'
                             : 'bg-yellow-100 text-yellow-800'
@@ -235,6 +242,12 @@ export function TournamentDetail({
                       >
                         {userRegistration.status === 'approved'
                           ? 'Approuvé'
+                          : userRegistration.status === 'accepted_paid'
+                          ? 'Payé'
+                          : userRegistration.status === 'accepted_unpaid'
+                          ? 'En attente de paiement'
+                          : userRegistration.status === 'expired_unpaid'
+                          ? 'Paiement expiré'
                           : userRegistration.status === 'rejected'
                           ? 'Refusé'
                           : 'En attente'}
@@ -253,6 +266,15 @@ export function TournamentDetail({
                   </div>
                 </CardContent>
               </Card>
+            )}
+
+            {/* Payment Banner pour les inscriptions avec paiement */}
+            {userRegistration && tournament.price && tournament.price > 0 && (
+              <PaymentBanner
+                registration={userRegistration}
+                tournamentPrice={tournament.price}
+                tournamentTitle={tournament.title}
+              />
             )}
 
             {/* Organizer view */}
@@ -276,24 +298,28 @@ export function TournamentDetail({
                       <RegistrationsList
                         registrations={registrations}
                         tournamentId={tournament.id}
+                        tournamentPrice={tournament.price}
                       />
                     </TabsContent>
                     <TabsContent value="pending">
                       <RegistrationsList
                         registrations={registrations.filter((r) => r.status === 'pending')}
                         tournamentId={tournament.id}
+                        tournamentPrice={tournament.price}
                       />
                     </TabsContent>
                     <TabsContent value="approved">
                       <RegistrationsList
                         registrations={registrations.filter((r) => r.status === 'approved')}
                         tournamentId={tournament.id}
+                        tournamentPrice={tournament.price}
                       />
                     </TabsContent>
                     <TabsContent value="rejected">
                       <RegistrationsList
                         registrations={registrations.filter((r) => r.status === 'rejected')}
                         tournamentId={tournament.id}
+                        tournamentPrice={tournament.price}
                       />
                     </TabsContent>
                   </Tabs>

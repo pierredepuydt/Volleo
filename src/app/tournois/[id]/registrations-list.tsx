@@ -18,16 +18,21 @@ interface Registration {
   team_name: string | null;
   teammate_first_name: string | null;
   teammate_last_name: string | null;
-  status: 'pending' | 'approved' | 'rejected' | 'waitlisted';
+  status: 'pending' | 'approved' | 'rejected' | 'waitlisted' | 'accepted_unpaid' | 'accepted_paid' | 'expired_unpaid';
+  payment_status: 'pending' | 'completed' | 'failed' | 'expired' | null;
+  accepted_at: string | null;
+  payment_deadline: string | null;
+  paid_at: string | null;
   created_at: string;
 }
 
 interface RegistrationsListProps {
   registrations: Registration[];
   tournamentId: string;
+  tournamentPrice: number | null;
 }
 
-export function RegistrationsList({ registrations, tournamentId }: RegistrationsListProps) {
+export function RegistrationsList({ registrations, tournamentId, tournamentPrice }: RegistrationsListProps) {
   const { toast } = useToast();
   const [updating, setUpdating] = useState<string | null>(null);
 
@@ -36,16 +41,40 @@ export function RegistrationsList({ registrations, tournamentId }: Registrations
     const supabase = createClient();
 
     try {
+      // Déterminer le statut final selon le prix du tournoi
+      const finalStatus = status === 'approved' 
+        ? (tournamentPrice && tournamentPrice > 0 ? 'accepted_unpaid' : 'approved')
+        : 'rejected';
+
+      // Préparer les données de mise à jour
+      const updateData: any = { status: finalStatus };
+      
+      // Si c'est une acceptation avec paiement, ajouter les champs de paiement
+      if (finalStatus === 'accepted_unpaid') {
+        const now = new Date();
+        const paymentDeadline = new Date(now.getTime() + 24 * 60 * 60 * 1000); // +24h
+        
+        updateData.accepted_at = now.toISOString();
+        updateData.payment_deadline = paymentDeadline.toISOString();
+        updateData.payment_status = 'pending';
+      }
+
       const { error } = await supabase
         .from('registrations')
-        .update({ status })
+        .update(updateData)
         .eq('id', registrationId);
 
       if (error) throw error;
 
+      const message = status === 'approved' 
+        ? (tournamentPrice && tournamentPrice > 0 
+          ? 'Inscription acceptée - En attente de paiement (24h)'
+          : 'Inscription approuvée')
+        : 'Inscription refusée';
+
       toast({
-        title: status === 'approved' ? 'Inscription approuvée' : 'Inscription refusée',
-        description: 'Le statut a été mis à jour avec succès.',
+        title: status === 'approved' ? 'Inscription acceptée' : 'Inscription refusée',
+        description: message,
       });
 
       window.location.reload();
@@ -100,6 +129,12 @@ export function RegistrationsList({ registrations, tournamentId }: Registrations
               className={`text-xs px-2 py-1 rounded ${
                 registration.status === 'approved'
                   ? 'bg-green-100 text-green-800'
+                  : registration.status === 'accepted_paid'
+                  ? 'bg-green-100 text-green-800'
+                  : registration.status === 'accepted_unpaid'
+                  ? 'bg-orange-100 text-orange-800'
+                  : registration.status === 'expired_unpaid'
+                  ? 'bg-red-100 text-red-800'
                   : registration.status === 'rejected'
                   ? 'bg-red-100 text-red-800'
                   : 'bg-yellow-100 text-yellow-800'
@@ -107,6 +142,12 @@ export function RegistrationsList({ registrations, tournamentId }: Registrations
             >
               {registration.status === 'approved'
                 ? 'Approuvé'
+                : registration.status === 'accepted_paid'
+                ? 'Payé'
+                : registration.status === 'accepted_unpaid'
+                ? 'En attente de paiement'
+                : registration.status === 'expired_unpaid'
+                ? 'Paiement expiré'
                 : registration.status === 'rejected'
                 ? 'Refusé'
                 : 'En attente'}

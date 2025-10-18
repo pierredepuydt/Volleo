@@ -127,24 +127,28 @@ export function TournamentDetailPage({
                         <RegistrationsList
                           registrations={registrations}
                           tournamentId={tournament.id}
+                          tournamentPrice={tournament.price}
                         />
                       </TabsContent>
                       <TabsContent value="pending" className="mt-6">
                         <RegistrationsList
                           registrations={registrations.filter((r) => r.status === 'pending')}
                           tournamentId={tournament.id}
+                          tournamentPrice={tournament.price}
                         />
                       </TabsContent>
                       <TabsContent value="approved" className="mt-6">
                         <RegistrationsList
                           registrations={registrations.filter((r) => r.status === 'approved')}
                           tournamentId={tournament.id}
+                          tournamentPrice={tournament.price}
                         />
                       </TabsContent>
                       <TabsContent value="rejected" className="mt-6">
                         <RegistrationsList
                           registrations={registrations.filter((r) => r.status === 'rejected')}
                           tournamentId={tournament.id}
+                          tournamentPrice={tournament.price}
                         />
                       </TabsContent>
                     </Tabs>
