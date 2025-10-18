@@ -36,6 +36,11 @@ export function RegistrationsList({ registrations, tournamentId, tournamentPrice
   const { toast } = useToast();
   const [updating, setUpdating] = useState<string | null>(null);
 
+  // Debug: afficher les props reçues
+  console.log('🔍 RegistrationsList props:');
+  console.log('- tournamentPrice:', tournamentPrice);
+  console.log('- registrations count:', registrations.length);
+
   const updateStatus = async (registrationId: string, status: 'approved' | 'rejected') => {
     setUpdating(registrationId);
     const supabase = createClient();

@@ -295,6 +295,12 @@ export function TournamentDetail({
                   <CardDescription>
                     {registrations.length} inscription(s)
                   </CardDescription>
+                  {/* Debug info pour organisateur */}
+                  <div className="mt-2 p-2 bg-blue-100 rounded text-xs">
+                    <strong>Debug Organisateur:</strong><br/>
+                    Tournament Price: {tournament.price}<br/>
+                    Tournament ID: {tournament.id}
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="all">
