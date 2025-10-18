@@ -13,5 +13,4 @@ export const stripe = new Stripe(stripeSecretKey, {
 });
 
 export const CURRENCY = 'eur';
-export const PAYMENT_DEADLINE_HOURS = 24;
 

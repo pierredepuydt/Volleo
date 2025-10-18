@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { stripe, CURRENCY, PAYMENT_DEADLINE_HOURS } from '@/lib/stripe/server';
+import { stripe, CURRENCY } from '@/lib/stripe/server';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
