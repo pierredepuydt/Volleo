@@ -77,7 +77,14 @@ export default async function TournamentPage({
   if (user) {
     const { data: registration } = await supabase
       .from('registrations')
-      .select('*')
+      .select(`
+        *,
+        tournaments!inner(
+          id,
+          title,
+          price
+        )
+      `)
       .eq('tournament_id', params.id)
       .eq('user_id', user.id)
       .single();

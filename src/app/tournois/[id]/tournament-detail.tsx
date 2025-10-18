@@ -270,11 +270,21 @@ export function TournamentDetail({
 
             {/* Payment Banner pour les inscriptions avec paiement */}
             {userRegistration && tournament.price && tournament.price > 0 && (
-              <PaymentBanner
-                registration={userRegistration}
-                tournamentPrice={tournament.price}
-                tournamentTitle={tournament.title}
-              />
+              <>
+                {/* Debug info - à supprimer après test */}
+                <div className="mb-4 p-4 bg-gray-100 rounded text-sm">
+                  <strong>Debug PaymentBanner:</strong><br/>
+                  Status: {userRegistration.status}<br/>
+                  Payment Status: {userRegistration.payment_status || 'null'}<br/>
+                  Payment Deadline: {userRegistration.payment_deadline || 'null'}<br/>
+                  Tournament Price: {tournament.price}
+                </div>
+                <PaymentBanner
+                  registration={userRegistration}
+                  tournamentPrice={tournament.price}
+                  tournamentTitle={tournament.title}
+                />
+              </>
             )}
 
             {/* Organizer view */}
